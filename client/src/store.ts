@@ -1,6 +1,8 @@
 import { create } from 'zustand';
 import { StarSystem, PlanetData } from '../../shared/types';
 
+export type { StarSystem, PlanetData };
+
 export interface Channel {
     id: string;
     name: string;
@@ -58,7 +60,7 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
         }));
 
         // VISUAL 1: Artificial delay for Warp Animation (2 seconds)
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        const delayPromise = new Promise(resolve => setTimeout(resolve, 2000));
 
         try {
             // If specific coords provided, use them, otherwise use channel's current target coords
@@ -69,8 +71,9 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
                 ? `?x=${targetCoords.x}&y=${targetCoords.y}&z=${targetCoords.z}`
                 : '';
 
-            const res = await fetch(`http://localhost:3001/api/system/generate${query}`);
-            const data = await res.json();
+            const fetchPromise = fetch(`http://localhost:3001/api/system/generate${query}`).then(res => res.json());
+
+            const [_, data] = await Promise.all([delayPromise, fetchPromise]);
 
             set((state) => ({
                 channels: state.channels.map(c => c.id === channelId ? {
@@ -84,6 +87,9 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
             }));
         } catch (error) {
             console.error(error);
+            // Ensure we complete the minimum delay even if fetch fails to avoid jarring visual jumps
+            await delayPromise;
+
             set((state) => ({
                 channels: state.channels.map(c => c.id === channelId ? { ...c, status: 'ERROR', isWarping: false } : c)
             }));
