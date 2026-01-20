@@ -1,0 +1,16 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+
+  - package-ecosystem: "pip"  # For Python requirements.txt
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      
+  - package-ecosystem: "docker" # For Dockerfile
+    directory: "/"
+    schedule:
+      interval: "weekly"
