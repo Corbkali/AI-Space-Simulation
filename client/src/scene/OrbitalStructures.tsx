@@ -1,7 +1,6 @@
 import { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
-import { Instance, Instances } from '@react-three/drei';
 
 interface OrbitalStructureProps {
     radius: number;
@@ -11,34 +10,39 @@ interface OrbitalStructureProps {
 
 // Low Tech (0.5 - 1.2): Satellites / Stations
 const SatelliteSwarm = ({ radius, count, color }: { radius: number, count: number, color: string }) => {
-    return (
-        <Instances range={count}>
-            <boxGeometry args={[0.05, 0.05, 0.1]} />
-            <meshBasicMaterial color={color} />
-            {Array.from({ length: count }).map((_, i) => (
-                <Satellite key={i} radius={radius} index={i} total={count} />
-            ))}
-        </Instances>
-    );
-};
+    const meshRef = useRef<THREE.InstancedMesh>(null);
+    const dummy = useMemo(() => new THREE.Object3D(), []);
 
-const Satellite = ({ radius, index, total }: { radius: number, index: number, total: number }) => {
-    const ref = useRef<any>(null);
-    const speed = 0.5 + Math.random() * 0.5;
-    const offset = (index / total) * Math.PI * 2;
-    const yOffset = (Math.random() - 0.5) * 0.5;
+    const satellites = useMemo(() => {
+        return Array.from({ length: count }).map((_, i) => ({
+            speed: 0.5 + Math.random() * 0.5,
+            offset: (i / count) * Math.PI * 2,
+            yOffset: (Math.random() - 0.5) * 0.5,
+        }));
+    }, [count]);
 
     useFrame(({ clock }) => {
-        if (ref.current) {
-            const time = clock.getElapsedTime() * speed;
-            ref.current.position.x = Math.sin(time + offset) * (radius + 0.5);
-            ref.current.position.z = Math.cos(time + offset) * (radius + 0.5);
-            ref.current.position.y = Math.sin(time * 2 + offset) * yOffset;
-            ref.current.rotation.y = time;
-        }
+        if (!meshRef.current) return;
+        const elapsedTime = clock.getElapsedTime();
+
+        satellites.forEach((data, i) => {
+             const time = elapsedTime * data.speed;
+             dummy.position.x = Math.sin(time + data.offset) * (radius + 0.5);
+             dummy.position.z = Math.cos(time + data.offset) * (radius + 0.5);
+             dummy.position.y = Math.sin(time * 2 + data.offset) * data.yOffset;
+             dummy.rotation.y = time;
+             dummy.updateMatrix();
+             meshRef.current!.setMatrixAt(i, dummy.matrix);
+        });
+        meshRef.current.instanceMatrix.needsUpdate = true;
     });
 
-    return <Instance ref={ref} />;
+    return (
+        <instancedMesh ref={meshRef} args={[undefined, undefined, count]}>
+            <boxGeometry args={[0.05, 0.05, 0.1]} />
+            <meshBasicMaterial color={color} />
+        </instancedMesh>
+    );
 };
 
 // Medium Tech (1.2 - 2.0): Orbital Rings & Space Elevators
@@ -92,7 +96,7 @@ const EnergyBeams = ({ radius, color }: { radius: number, color: string }) => {
 };
 
 
-export const OrbitalStructures = ({ radius, techLevel, color }: OrbitalStructureProps) => {
+export const OrbitalStructures = ({ radius, techLevel, color: _color }: OrbitalStructureProps) => {
     const structureColor = techLevel > 2.0 ? '#00ffff' : (techLevel > 1.2 ? '#ffaa00' : '#cccccc');
 
     return (
