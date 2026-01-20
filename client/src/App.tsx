@@ -55,7 +55,6 @@ const RadioLog = ({ system }: { system: StarSystem | null }) => {
     if (!hasLife && !hasAnomaly) return null;
 
     const civ = system?.planets.find(p => p.civilization)?.civilization;
-    const anomalyPlanet = system?.planets.find(p => p.anomaly === 'AI_SWARM');
 
     if (hasAnomaly) {
         return (

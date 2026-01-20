@@ -1,6 +1,8 @@
 import { create } from 'zustand';
 import { StarSystem, PlanetData } from '../../shared/types';
 
+export type { StarSystem };
+
 export interface Channel {
     id: string;
     name: string;
