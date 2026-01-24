@@ -1,111 +1,206 @@
 # Nebula Navigator 🚀
 
-**A stunning, interactive 3D space simulation** built with React, Three.js, Zustand, and custom shaders. Explore procedurally generated star systems, encounter AI Swarm anomalies, and witness civilizations at varying tech levels with dynamic orbital structures.
+> **A stunning, interactive 3D space simulation exploring procedurally generated star systems.**
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+
+**Nebula Navigator** invites you to wander through a galaxy of uniquely crafted solar systems. Built with modern web technologies, it offers a premium, glass-morphism styled UI and immersive 3D visuals.
+
+<!--
+TODO: Add a screenshot of the application here.
+![Nebula Navigator Screenshot](path/to/screenshot.png)
+-->
 
 ---
 
-## ✨ Overview
+## 📑 Table of Contents
 
-Nebula Navigator lets you wander through a galaxy of uniquely crafted solar systems. Each planet may host:
+- [About The Project](#about-the-project)
+- [Key Features](#key-features)
+- [Tech Stack](#tech-stack)
+- [System Architecture](#system-architecture)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Environment Setup](#environment-setup)
+- [Usage](#usage)
+- [Roadmap](#roadmap)
+- [Contributing](#contributing)
+- [License](#license)
+- [Acknowledgments](#acknowledgments)
 
-- **Life & Civilizations** with a Kardashev‑scale tech level (0.5 – 3.0).
-- **Orbital Structures** ranging from satellite swarms to megastructures that visually convey a civilization’s advancement.
-- **AI Swarm Anomalies** – glitchy, emissive spheres that add mystery and visual intrigue.
+---
 
-The app runs entirely in the browser, delivering a premium, glass‑morphism‑styled UI with smooth micro‑animations and vibrant gradients.
+## 🔭 About The Project
+
+Nebula Navigator is an ambitious project to create a procedural universe in your browser. It combines high-fidelity WebGL rendering with a robust backend for persistence, allowing users to discover and log unique star systems.
+
+Each planet you encounter is unique, hosting:
+- **Life & Civilizations**: Ranging from primitive Stone Age societies to Transcendent civilizations (Kardashev scale 0.5 – 3.0).
+- **Orbital Structures**: From simple satellite swarms to massive energy-absorption megastructures.
+- **Anomalies**: Mysterious AI Swarms and glitchy artifacts that add intrigue to your exploration.
+
+The immersive 3D experience runs natively in the browser, leveraging **Three.js** for rendering and **React** for a responsive, futuristic interface.
+
+---
+
+## ✨ Key Features
+
+*   **Procedural Generation**: Infinite variations of stars, planets, and orbital distances.
+*   **Civilization Simulation**: Weighted generation of tech levels, government types, ethics, and species traits.
+*   **Dynamic Visuals**: Custom GLSL shaders for stars, atmospheres, and planetary surfaces.
+*   **Interactive 3D Scene**: Orbit controls, smooth camera transitions, and LOD management.
+*   **Persistent Universe**: Discoveries are saved to a database, creating a shared history of explored systems.
+*   **Modern UI**: Glass-morphism HUD with micro-animations and responsive design.
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **Frontend**: React, TypeScript, @react-three/fiber, @react-three/drei
-- **State Management**: Zustand
-- **Styling**: Vanilla CSS with custom design tokens (dynamic gradients, dark mode)
-- **Shaders**: Custom GLSL shaders for stars, atmospheres, and planetary surfaces
-- **Build**: Vite (dev server via `npm run dev`)
+### Frontend
+*   ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB) **React** (Vite)
+*   ![Three.js](https://img.shields.io/badge/Three.js-000000?style=for-the-badge&logo=three.js&logoColor=white) **Three.js** / **@react-three/fiber**
+*   **State Management**: Zustand
+*   **Styling**: CSS Modules, Glassmorphism design tokens
+
+### Backend
+*   ![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white) **Node.js**
+*   ![Express](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white) **Express**
+*   **Language**: TypeScript
+
+### Database
+*   ![SQLite](https://img.shields.io/badge/SQLite-07405E?style=for-the-badge&logo=sqlite&logoColor=white) **SQLite**
+*   ![Prisma](https://img.shields.io/badge/Prisma-3982CE?style=for-the-badge&logo=Prisma&logoColor=white) **Prisma ORM**
+
+---
+
+## 🏗️ System Architecture
+
+The project is organized into a monorepo-style structure:
+
+- **`client/`**: The React frontend application. Handles the 3D canvas, HUD, and user interaction.
+- **`server/`**: The Node.js/Express backend. Manages API endpoints, procedural generation logic, and database interactions.
+- **`shared/`**: Common types and utilities shared between client and server.
+
+See [ARCHITECTURE.md](./ARCHITECTURE.md) for a deep dive.
 
 ---
 
 ## 🚀 Getting Started
 
+Follow these steps to get a local copy up and running.
+
 ### Prerequisites
 
-- **Node.js** (v18 or later)
-- **npm** (comes with Node)
+*   **Node.js** (v18 or later recommended)
+*   **npm** (comes with Node.js)
 
 ### Installation
 
+1.  **Clone the repository**
+    ```bash
+    git clone https://github.com/your-username/nebula-navigator.git
+    cd nebula-navigator
+    ```
+
+2.  **Install Client Dependencies**
+    ```bash
+    cd client
+    npm install
+    cd ..
+    ```
+
+3.  **Install Server Dependencies**
+    ```bash
+    cd server
+    npm install
+    cd ..
+    ```
+
+### Environment Setup
+
+1.  **Server Configuration**
+    Navigate to the `server` directory and create a `.env` file:
+    ```bash
+    cd server
+    touch .env
+    ```
+
+2.  **Add Database URL**
+    Open `.env` and add the connection string for SQLite:
+    ```env
+    DATABASE_URL="file:./dev.db"
+    PORT=3001
+    ```
+
+3.  **Initialize Database**
+    Run the Prisma migration to set up the SQLite database:
+    ```bash
+    npx prisma generate
+    npx prisma db push
+    ```
+
+---
+
+## 🎮 Usage
+
+You will need to run the client and server in separate terminal instances.
+
+### 1. Start the Backend
 ```bash
-# Clone the repository (if you haven't already)
-git clone <repo-url>
-cd Antigrav
-
-# Install dependencies for both client and server
-npm install   # installs root dev dependencies
-cd client && npm install && cd ..
-cd server && npm install && cd ..
+cd server
+npm run dev
 ```
+*The server will start on `http://localhost:3001`.*
 
-### Running Locally
-
+### 2. Start the Frontend
 ```bash
-# Start the backend (API / data generators)
-cd server && npm run dev
-
-# In a new terminal, start the frontend
-cd client && npm run dev
+cd client
+npm run dev
 ```
+*The client will start on `http://localhost:3000` (or the port shown in your terminal).*
 
-Open your browser at `http://localhost:3000/` – the app will automatically load the first generated star system.
-
----
-
-## 📸 Screenshots
-
-![Nebula Navigator Scene](C:/Users/corbi/.gemini/antigravity/brain/da303d1a-ae9c-4e28-8028-c8f131e1400c/nebula_navigator_scene_1768861318276.png)
-*The main 3D scene showcasing a planet with orbital structures and an AI Swarm anomaly.*
+Open your browser to the client URL. The app will automatically generate and load the first star system!
 
 ---
 
-## 🧩 Features
+## 🗺️ Roadmap
 
-- **Procedural Star System Generation** – random stars, planets, and orbital distances.
-- **Civilization Generation** – weighted tech levels, species, government, and ethics.
-- **Orbital Structures** – satellite swarms, orbital rings, space elevators, and energy‑absorption megastructures.
-- **AI Swarm Anomaly** – glitchy sphere with flickering messages.
-- **Dynamic UI** – responsive controls, smooth camera transitions, and polished HUD.
-- **Extensible Architecture** – easy to add new anomalies, ship models, or gameplay mechanics.
+We are constantly improving Nebula Navigator. Here are some planned features inspired by our community and AI reviews:
 
----
-
-## 🤖 AI Review Summary (10 Agents)
-
-Below are concise improvement suggestions from ten simulated AI reviewers, each focusing on a different aspect. Implementing these will boost the project **ten‑fold**.
-
-1. **Performance Engineer** – Optimize shader uniforms and enable `THREE.WebGLRenderer`’s `antialias: false` on low‑end devices; add LOD for distant orbital structures.
-2. **UX Designer** – Introduce a dark‑mode toggle, refine tooltip animations, and add a mini‑map for navigation.
-3. **Accessibility Advocate** – Ensure all UI text meets WCAG AA contrast ratios, add ARIA labels to controls, and provide keyboard shortcuts.
-4. **Security Analyst** – Sanitize any user‑generated content (e.g., civilization names) before rendering to prevent XSS.
-5. **DevOps Specialist** – Add Dockerfiles for client and server, and a CI workflow that runs lint, type‑check, and visual regression tests.
-6. **Graphics Artist** – Replace placeholder satellite meshes with low‑poly models, and add particle‑based thruster effects for ships.
-7. **Game Designer** – Implement a simple resource system (energy, population) that reacts to the presence of AI Swarm anomalies.
-8. **Documentation Guru** – Expand the README with a contribution guide, code‑style conventions, and a FAQ section.
-9. **Testing Engineer** – Introduce Jest + React Testing Library unit tests for core components and integration tests for the generation pipeline.
-10. **Community Manager** – Add a “Share Screenshot” button that copies a link to the current system view, encouraging social sharing.
+- [ ] **Performance Optimization**: Shader uniform improvements and LOD for distant structures.
+- [ ] **Dark Mode Toggle**: For the UI (though space is already pretty dark!).
+- [ ] **Accessibility**: Improved contrast ratios and ARIA labels.
+- [ ] **Security**: Enhanced input sanitization for user discoveries.
+- [ ] **DevOps**: Docker support and CI/CD pipelines.
+- [ ] **Visual Upgrades**: Low-poly models for satellites and particle effects for ships.
+- [ ] **Gameplay**: Resource systems (energy, population) reacting to anomalies.
+- [ ] **Documentation**: Expanded contribution guides and FAQs.
+- [ ] **Testing**: Comprehensive unit and integration tests with Jest.
+- [ ] **Social**: "Share Screenshot" feature to capture your discoveries.
 
 ---
 
 ## 🤝 Contributing
 
-We welcome contributions! Please:
+Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-1. Fork the repo.
-2. Create a feature branch (`git checkout -b feat/your-feature`).
-3. Follow the linting rules (`npm run lint`).
-4. Open a Pull Request with a clear description of your changes.
+1.  Fork the Project
+2.  Create your Feature Branch (`git checkout -b feat/AmazingFeature`)
+3.  Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4.  Push to the Branch (`git push origin feat/AmazingFeature`)
+5.  Open a Pull Request
 
 ---
 
 ## 📜 License
 
-MIT © 2026 Corbin "Antigrav".
+Distributed under the MIT License. See `LICENSE` for more information.
+
+---
+
+## 🙏 Acknowledgments
+
+*   **Corbin "Antigrav"** - Project Creator
+*   **The 10 AI Agents** - For their simulated reviews and architecture suggestions that helped shape this project.
